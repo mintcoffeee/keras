@@ -25,7 +25,8 @@ model.add(Dense(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(16, activation='relu'))
-model.add(Dense(1, activation='sigmoid'))
+model.add(Dense(1, activation='sigmoid'))   # 이진분류일 때, activation = sigmoid
+# sigmoid = 0 과 1을 출력하는 것이 아니라, 0 과 1 사이의 값을 출력하는 것이다.
 
 # 3. 컴파일, 훈련
 model.compile(loss='binary_crossentropy', optimizer='adam',
@@ -58,13 +59,17 @@ y_predict = model.predict(x_test)
 # print(y_predict[:10])   # 값이 실수형태. 0 or 1 이 아니다. -> 정수형으로 바궈야 한다.
 # print(y_test[:10])
 # [과제] 실수 -> 정수 변환해서 acc 값 프린트
-
-y_predict = y_predict.flatten()     # 차원 펴주기
-y_predict_int = np.where(y_predict > 0.5, 1 , 0) # 0.5보다크면 1, 작으면 0
+# 1. np.where
+# y_predict = y_predict.flatten()     # 차원 펴주기
+# y_predict_int = np.where(y_predict > 0.5, 1 , 0) # 0.5보다크면 1, 작으면 0
 # print(y_predict_int[:10])   # [1 0 1 1 0 1 1 1 0 1]
 
+# 2. round 처리
+y_predict = np.round(y_predict)
+print(y_predict)
+
 from sklearn.metrics import accuracy_score
-acc = accuracy_score(y_test, y_predict_int)
+acc = accuracy_score(y_test, y_predict)
 print('accuracy_score : ', acc)     # accuracy_score :  0.956140350877193
 
 
