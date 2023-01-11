@@ -6,56 +6,34 @@ from keras.layers import Dense
 from keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
 from keras.callbacks import EarlyStopping
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.metrics import r2_score
 
 # 1. 데이터
 datasets = load_iris()
-# datasets = load_boston()
-# print(datasets.DESCR)   # input 4개 output 1개.     pandas : .decribe() / .info()
-# print(datasets.feature_names)   # pandas : .columns
-# ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)'] 
-
 x = datasets.data
 y = datasets['target']
-# print(x)
-# print(y)
 # print(x.shape, y.shape)     # (150, 4) (150,)
 
-##### One Hot Encoding  #####    # y클래스의 개수만큼 열이 늘어난다.
-# 1. keras.utils의 to_categorical
+#  keras.utils의 to_categorical
 from keras.utils import to_categorical
 y = to_categorical(y)
 print(y)
-print(y.shape)      # (150, 3)
-
-# 2. sklearn의 OneHotEncoder
-# https://2-chae.github.io/category/1.ai/30
-# from sklearn.preprocessing import OneHotEncoder
-# y = y.reshape(-1,1)       # 1차원 배열에서 2차원 배열로 변형하는 코드. '-1'은 크기가 정해지지 않은 차원을 의미.
-# ohe = OneHotEncoder()
-# ohe.fit(y)            # fit_transform은 train에만 사용하고 test에는 학습된 인코더에 fit만 해야한다
-# y = ohe.transform(y)
-# y = y.toarray()       # List를 Array로 바꿔주는 메서드
-# print(y)      
-# print(y.shape)      
-
-# 3. pandas
-# y = pd.get_dummies(y)
-# print(y)        # [150 rows x 3 columns]
-# 문제점 : pandas.get_dummies는 train 데이터의 특성을 학습하지 않기 때문에 train 데이터에만 있고 
-#        test 데이터에는 없는 카테고리를 test 데이터에서 원핫인코딩 된 칼럼으로 바꿔주지 않는다.
-#        https://psystat.tistory.com/136
-
-###################################
-
+# print(y.shape)      # (150, 3)
 x_train, x_test, y_train, y_test = train_test_split(
-    x, y, shuffle=True,            # shuffle = False 했을 때의 문제점 : y_test = [2 2 2 ... 2] , 
-                                    # y_predict (ex)[1 2 0 1 ...0]) 값이랑 비교했을 때 대부분의 값이 일치하지 않을 수 있다.
+    x, y, shuffle=True,            
     random_state=11,
     test_size=0.1,  
     stratify=y      # 분류에서는 train 과 test 둘 중 한 곳으로 데이터가 치우치면 문제가 생길 수 있다. y데이터가 분류형 데이터일 때만 사용가능 하다.
 )
-print(y_train)
-print(y_test)
+
+### Scaling ####
+scaler = MinMaxScaler()
+# scaler = StandardScaler()
+scaler.fit(x_train)               # scaler에 대한 가중치생산
+x_train = scaler.transform(x_train)     # 실질적인 값 변환
+# x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
 
 # 2. 모델구성
 model = Sequential()
@@ -100,4 +78,11 @@ print('accuracy : ', acc)
 """
 loss :  0.025238502770662308
 accuracy :  1.0
+
+StandardScaling
+accuracy :  1.0
+
+MinMaxScaling
+accuracy :  1.0
+
 """
