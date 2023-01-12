@@ -48,7 +48,7 @@ dense2 = Dense(256, activation='relu')(dense1)
 dense3 = Dense(128, activation='relu')(dense2)
 dense4 = Dense(64, activation='relu')(dense3)
 dense5 = Dense(64, activation='relu')(dense4)
-output1 = Dense(1, activation='softmax')(dense5)
+output1 = Dense(10, activation='softmax')(dense5)
 model = Model(inputs=input1, outputs=output1)
 # model.summary()
 # Total params: 209,985
