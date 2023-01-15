@@ -29,14 +29,14 @@ x_train, x_test, y_train, y_test = train_test_split(
 )
 
 #### Scaling ####
-scaler = MinMaxScaler()
-# scaler = StandardScaler()
+# scaler = MinMaxScaler()
+scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
 # 2. 모델 구성(순차형)
 model = Sequential()
-model.add(Dense(512, activation='linaer', input_shape=(64,)))
+model.add(Dense(512, activation='linear', input_shape=(64,)))
 model.add(Dropout(0.5))
 model.add(Dense(256, activation='relu'))
 model.add(Dropout(0.3))
@@ -103,10 +103,15 @@ print('accuracy : ', accuracy)
 
 y_predict = model.predict(x_test)
 y_predict = np.argmax(y_predict, axis=1)   
-print('y_pred : ', y_predict)
+# print('y_pred : ', y_predict)
 y_test = np.argmax(y_test, axis=1)    
-print('y_test : ', y_test)
+# print('y_test : ', y_test)
 
 from sklearn.metrics import accuracy_score
 acc = accuracy_score(y_test, y_predict)
 print('accuracy_score : ', acc) 
+
+"""
+loss :  0.05738275125622749
+accuracy :  0.9814814925193787
+"""

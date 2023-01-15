@@ -35,21 +35,21 @@ x_train, x_test, y_train, y_test = train_test_split(
 )
 
 #### Scaling ####
-scaler = MinMaxScaler()
-# scaler = StandardScaler()
+# scaler = MinMaxScaler()
+scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
 # 2. 모델 구성(순차형)
 model = Sequential()
 model.add(Dense(64, activation='relu', input_shape=(54,)))
-model.add(Dropout(0.5))
+model.add(Dropout(0.2))
 model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.3))
 model.add(Dense(64, activation='relu'))
-model.add(Dropout(0.2))
+model.add(Dropout(0.4))
 model.add(Dense(32, activation='relu'))
-model.add(Dense(32, activation='relu'))
+model.add(Dropout(0.5))
 model.add(Dense(7, activation='softmax'))
 model.summary()
 
@@ -97,7 +97,7 @@ mcp = ModelCheckpoint(monitor="val_loss", mode="auto", verbose=1,
                       filepath= filepath + "k31_10_" + date + "_" + filename)
 
 
-model.fit(x_train, y_train, epochs=1000, batch_size=54,
+model.fit(x_train, y_train, epochs=1000, batch_size=108,
                  validation_split=0.3, verbose=1,
                  callbacks=[es, mcp])
 
@@ -109,10 +109,16 @@ print('accuracy : ', accuracy)
 
 y_predict = model.predict(x_test)
 y_predict = np.argmax(y_predict, axis=1)   
-print('y_pred : ', y_predict)
+# print('y_pred : ', y_predict)
 y_test = np.argmax(y_test, axis=1)    
-print('y_test : ', y_test)
+# print('y_test : ', y_test)
 
 from sklearn.metrics import accuracy_score
 acc = accuracy_score(y_test, y_predict)
 print('accuracy_score : ', acc) 
+
+"""
+loss :  0.3931249976158142
+accuracy :  0.8356205224990845
+
+"""

@@ -21,8 +21,8 @@ x_train, x_test, y_train, y_test = train_test_split(
 )
 
 #### Scaling ####
-scaler = MinMaxScaler()
-# scaler = StandardScaler()
+# scaler = MinMaxScaler()
+scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
@@ -99,3 +99,8 @@ y_predict = np.round(y_predict)
 from sklearn.metrics import accuracy_score
 acc = accuracy_score(y_test, y_predict)
 print('accuracy_score : ', acc) 
+
+"""
+loss :  0.1510966718196869
+accuracy :  0.9824561476707458
+"""

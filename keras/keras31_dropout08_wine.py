@@ -15,7 +15,6 @@ path = "./_save/"
 datasets = load_wine()
 x = datasets.data
 y = datasets['target']
-# print(x.shape, y.shape)     # (150, 4) (150,)
 
 print(x.shape, y.shape)     # (178, 13) (178,)
 print(y)
@@ -39,7 +38,7 @@ x_test = scaler.transform(x_test)
 
 # 2. 모델 구성(순차형)
 model = Sequential()
-model.add(Dense(128, activation='linaer', input_shape=(13,)))
+model.add(Dense(128, activation='linear', input_shape=(13,)))
 model.add(Dropout(0.5))
 model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.3))
@@ -93,7 +92,7 @@ mcp = ModelCheckpoint(monitor="val_loss", mode="auto", verbose=1,
                       filepath= filepath + "k31_08_" + date + "_" + filename)
 
 
-model.fit(x_train, y_train, epochs=1000, batch_size=32,
+model.fit(x_train, y_train, epochs=1000, batch_size=13,
                  validation_split=0.3, verbose=1,
                  callbacks=[es, mcp])
 
@@ -112,3 +111,8 @@ print('y_test : ', y_test)
 from sklearn.metrics import accuracy_score
 acc = accuracy_score(y_test, y_predict)
 print('accuracy_score : ', acc) 
+
+"""
+loss :  0.1169477179646492
+accuracy :  0.9814814925193787
+"""
