@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.datasets import load_wine
 from keras.models import Sequential, Model, load_model  
 from keras.layers import Dense, Input, Dropout, Conv2D, Flatten           
-from tensorflow.keras.utils import to_categorical
+from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import MinMaxScaler, StandardScaler

@@ -17,7 +17,7 @@ y = datasets['target']
 # print(x.shape, y.shape)     # (150, 4) (150,)
 
 #  keras.utils의 to_categorical
-from tensorflow.keras.utils import to_categorical
+from keras.utils import to_categorical
 y = to_categorical(y)
 # print(y.shape)      # (150, 3)
 
