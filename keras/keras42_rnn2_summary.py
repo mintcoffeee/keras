@@ -16,7 +16,7 @@ x = np.array([[1, 2, 3],
               [7, 8, 9]])
 
 y = np.array([4, 5, 6, 7, 8, 9, 10])
-# sirial data 에는 y 가 없다. 직접 만들어야 한다. 
+# 시계열 data 에는 y 가 없다. 직접 만들어야 한다. 
 
 print(x.shape, y.shape) # (7, 3) (7,)
 

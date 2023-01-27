@@ -12,6 +12,8 @@ def split_x(dataset, timesteps):
         subset = dataset[i : (i + timesteps)]
         aaa.append(subset)
     return np.array(aaa)
+# '딥러닝으로 걷는 시계열 예측'책 p.206 참고
+# RNN용 자르기
 
 bbb = split_x(a, timesteps)
 print(bbb)
