@@ -49,8 +49,8 @@ model.fit(x, y, epochs=1000, batch_size=1, validation_split=0.3, callbacks=[es])
 loss = model.evaluate(x, y)
 print('loss : ', loss)
 
-y_predict = np.array([8,9,10]).reshape(1, 3, 1)     # none, 3, 1 : none = 1 데이터가 1개
-resulut = model.predict(y_predict)
+x_predict = np.array([8,9,10]).reshape(1, 3, 1)     # none, 3, 1 : none = 1 데이터가 1개
+resulut = model.predict(x_predict)
 print('[8, 9, 10]의 결과 :', resulut)
 
 # RNN

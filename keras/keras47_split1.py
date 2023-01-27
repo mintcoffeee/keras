@@ -29,7 +29,7 @@ print(x.shape, y.shape)     # (6, 4) (6,)
 # LSTM 모델 구성
 # x_predict = np.array([7, 8, 9, 10]) -> y=11 ? 
 
-x = x.reshape(6, 4, 1)
+# x = x.reshape(6, 4, 1)
 
 # 2. 모델구성
 model = Sequential()
