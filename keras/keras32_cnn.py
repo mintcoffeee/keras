@@ -7,14 +7,16 @@ model = Sequential()
                             # 인풋 (60000, 5, 5, 1), (데이터, 가로, 세로, 컬러)    
                             # 행 : 데이터의 개수, 데이터 개수 6만 장, '행 무시'
 model.add(Conv2D(filters=10, kernel_size=(2,2),
-                 input_shape=(5,5,1)))      # (N, 4, 4, 10), N : 데이터의 개수, 몇개가 들어와도 상관없다.
+                 input_shape=(10,10,1)))      # (N, 4, 4, 10), N : 데이터의 개수, 몇개가 들어와도 상관없다.
                     # (batch_shape(훈련의 개수), rows, columns, cahnnels(color, filters))
 # (5, 5, 1) : (가로 5, 세로 5, 그림 1장(흑백)) /     (5, 5, 3(컬러,RGB))
 # kernerl_size
 # filter = 10 : (5 x 5) > (4 x 4) 필터 10장을 만들겠다. 
 # Conv2D 너무 많이 하면 특성이 강한 특성값들이 소멸한다.
 
-model.add(Conv2D(5, (2,2)))     # (N, 3, 3, 5)
+model.add(Conv2D(5, kernel_size = (2,2)))     # (N, 3, 3, 5)
+model.add(Conv2D(7, (2,2)))     # (N, 7, 7, 7)
+model.add(Conv2D(6, 2))     # (N, 6, 6, 6), kernel_size 2만 적어도 2,2 로 인식한다
 model.add(Flatten())                        # (N, 45, )
 # Flatten : 연산은 없다. 모양만 바뀜
 model.add(Dense(units=10))                        # (N, 10)
