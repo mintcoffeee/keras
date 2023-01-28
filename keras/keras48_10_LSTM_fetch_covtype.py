@@ -46,10 +46,10 @@ print(x_train.shape, x_test.shape)      # (406708, 6, 9, 1) (174304, 6, 9, 1)
 
 # 2. 모델 구성(순차형)
 model = Sequential()
-model.add(LSTM(64, activation='relu', return_sequences=True, input_shape=(18,3)))
+model.add(LSTM(32, activation='relu', return_sequences=True, input_shape=(18,3)))
 model.add(LSTM(64, activation='relu'))
-model.add(Dense(32, activation='relu'))
-model.add(Dense(32, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(128, activation='relu'))
 model.add(Dense(7, activation='softmax'))
 model.summary()
 
@@ -83,7 +83,7 @@ mcp = ModelCheckpoint(monitor="val_loss", mode="auto", verbose=1,
                       filepath= filepath + "k48_10_fetch_covtype_" + date + "_" + filename)
 
 
-model.fit(x_train, y_train, epochs=500, batch_size=256,
+model.fit(x_train, y_train, epochs=500, batch_size=512,
                  validation_split=0.3, verbose=1,
                  callbacks=[es, mcp])
 
@@ -110,3 +110,7 @@ print('accuracy_score : ', acc)
 # CNN
 # loss :  0.21782609820365906
 # accuracy :  0.9116314053535461
+
+# LSTM
+#### 데스크탑 GPU 로 돌려 보기
+

@@ -46,8 +46,8 @@ print(x_train.shape, x_test.shape)
 model = Sequential()
 model.add(LSTM(64, activation='relu', return_sequences=True, input_shape=(4,2)))
 model.add(LSTM(64, activation='relu'))
-model.add(Dense(32, activation='relu'))
-model.add(Dense(32, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(128, activation='relu'))
 model.add(Dense(1))
 model.summary()
 
@@ -81,7 +81,7 @@ mcp = ModelCheckpoint(monitor="val_loss", mode="auto", verbose=1,
                       filepath= filepath + "k48_05_kaggle_bike_" + date + "_" + filename)
 
 
-model.fit(x_train, y_train, epochs=500, batch_size=8,
+model.fit(x_train, y_train, epochs=500, batch_size=32,
                  validation_split=0.3, verbose=1,
                  callbacks=[es, mcp])
 
@@ -108,3 +108,7 @@ print("RMSE : ", rmse)
 # CNN
 # mse :  21771.087890625
 # RMSE :  147.55028957192422
+
+# LSTM  
+# mse :  21568.48828125
+# RMSE :  146.86212174838602

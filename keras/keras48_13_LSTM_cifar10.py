@@ -21,13 +21,13 @@ x_train_std = np.std(x_train, axis=(0,1,2))
 x_train = (x_train - x_train_mean) / x_train_std
 x_test = (x_test - x_train_mean ) / x_train_std
 
-x_train = x_train.reshape(60000, , 7)
-x_test = x_test.reshape(10000, , 7)
+x_train = x_train.reshape(50000, 32*3, 32)
+x_test = x_test.reshape(10000, 32*3, 32)
 
 # 2. 모델
 model = Sequential()
-model.add(LSTM(64, activation='relu', return_sequences=True, input_shape=(2,2)))
-model.add(LSTM(64, activation='relu'))
+model.add(LSTM(64, activation='relu', input_shape=(32*3, 32)))
+# model.add(LSTM(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(10, activation='softmax'))
@@ -56,7 +56,7 @@ filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
 mcp = ModelCheckpoint(monitor="val_loss", mode="auto", verbose=1,
                       save_best_only=True,
                       filepath= filepath + "k48_13_cifar10_" + date + "_" + filename)
-model.fit(x_train, y_train, epochs=100, batch_size=32, verbose=1,
+model.fit(x_train, y_train, epochs=100, batch_size=128, verbose=1,
           validation_split=0.25, callbacks=[es, mcp])
 
 # 4. 평가, 예측
@@ -66,3 +66,6 @@ print('acc : ', results[1])
 
 # loss :  0.7314203381538391
 # acc :  0.7484999895095825
+
+# LSTM
+#### 데스크탑 GPU 로 돌려 보기

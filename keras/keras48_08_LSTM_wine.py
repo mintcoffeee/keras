@@ -45,8 +45,8 @@ print(x_train.shape, x_test.shape)
 model = Sequential()
 model.add(LSTM(64, activation='relu', return_sequences=True, input_shape=(13,1)))
 model.add(LSTM(64, activation='relu'))
-model.add(Dense(32, activation='relu'))
-model.add(Dense(32, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(256, activation='relu'))
 model.add(Dense(3, activation='softmax'))
 model.summary()
 
@@ -80,7 +80,7 @@ mcp = ModelCheckpoint(monitor="val_loss", mode="auto", verbose=1,
                       filepath= filepath + "k48_08_wine_" + date + "_" + filename)
 
 
-model.fit(x_train, y_train, epochs=1000, batch_size=1,
+model.fit(x_train, y_train, epochs=1000, batch_size=2,
                  validation_split=0.3, verbose=1,
                  callbacks=[es, mcp])
 
@@ -106,4 +106,8 @@ print('accuracy_score : ', acc)
 
 # CNN
 # loss :  0.5867642164230347
+# accuracy :  0.9259259104728699
+
+# LSTM
+# loss :  0.28000226616859436
 # accuracy :  0.9259259104728699

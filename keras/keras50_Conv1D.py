@@ -49,7 +49,7 @@ model = Sequential()
 model.add(Conv1D(64, 2, activation='relu', padding='same',input_shape=(4,1)))   # 192, kernel_size = 2 
 model.add(Conv1D(128, 2, activation='relu'))  
 model.add(Conv1D(256, 2, activation='relu'))
-model.add(Flatten())   # ????
+model.add(Flatten())   # Filter 값이 있기 때문에 사용(?)
 model.add(Dense(512, activation='relu'))
 model.add(Dense(512, activation='relu'))
 model.add(Dense(1))

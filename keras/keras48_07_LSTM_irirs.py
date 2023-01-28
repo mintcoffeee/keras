@@ -41,8 +41,8 @@ print(x_train.shape, x_test.shape)
 model = Sequential()
 model.add(LSTM(64, activation='relu', return_sequences=True, input_shape=(4,1)))
 model.add(LSTM(64, activation='relu'))
-model.add(Dense(32, activation='relu'))
-model.add(Dense(32, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(128, activation='relu'))
 model.add(Dense(3, activation='softmax'))
 model.summary()
 
@@ -105,3 +105,7 @@ print('accuracy_score : ', acc)
 # CNN
 # loss :  0.599769651889801
 # accuracy :  0.9111111164093018
+
+# LSTM
+# loss :  0.33494821190834045
+# accuracy :  0.8888888955116272

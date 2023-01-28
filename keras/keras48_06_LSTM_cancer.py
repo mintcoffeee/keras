@@ -96,3 +96,6 @@ print('accuracy_score : ', acc)
 # loss :  0.17688554525375366
 # accuracy :  0.9532163739204407
 
+# LSTM
+# loss :  0.3009481430053711
+# accuracy :  0.9122806787490845

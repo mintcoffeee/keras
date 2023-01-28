@@ -43,8 +43,8 @@ print(x_train.shape, x_test.shape)
 model = Sequential()
 model.add(LSTM(64, activation='relu', return_sequences=True, input_shape=(16,4)))
 model.add(LSTM(64, activation='relu'))
-model.add(Dense(32, activation='relu'))
-model.add(Dense(32, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(256, activation='relu'))
 model.add(Dense(10, activation='softmax'))
 model.summary()
 
@@ -78,7 +78,7 @@ mcp = ModelCheckpoint(monitor="val_loss", mode="auto", verbose=1,
                       filepath= filepath + "k48_09_digits_" + date + "_" + filename)
 
 
-model.fit(x_train, y_train, epochs=500, batch_size=32,
+model.fit(x_train, y_train, epochs=500, batch_size=16,
                  validation_split=0.3, verbose=1,
                  callbacks=[es, mcp])
 
@@ -105,3 +105,7 @@ print('accuracy_score : ', acc)
 # CNN
 # loss :  0.049589142203330994
 # accuracy :  0.9888888597488403
+
+# LSTM
+# loss :  0.20019462704658508
+# accuracy :  0.949999988079071

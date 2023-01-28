@@ -1,7 +1,7 @@
 from keras.datasets import cifar100
 import numpy as np
 from keras.models import Sequential, Model
-from keras.layers import Conv2D, Dense, Flatten, Dropout, MaxPooling2D, Input
+from keras.layers import Conv2D, Dense, Flatten, Dropout, LSTM
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 # 1. 데이터
@@ -21,9 +21,12 @@ print(x_test.shape, y_test.shape)       # (10000, 32, 32, 3) (10000, 1)
 x_train = x_train/ 255.
 x_test = x_test / 255.
 
+x_train = x_train.reshape(50000, 32*3, 32)
+x_test = x_test.reshape(10000, 32*3, 32)
+
 # 2. 모델
 model = Sequential()
-model.add(LSTM(64, activation='relu', return_sequences=True, input_shape=(2,2)))
+model.add(LSTM(64, activation='relu', return_sequences=True, input_shape=(32*3, 32)))
 model.add(LSTM(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(32, activation='relu'))
@@ -54,7 +57,7 @@ filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
 mcp = ModelCheckpoint(monitor="val_loss", mode="auto", verbose=1,
                       save_best_only=True,
                       filepath= filepath + "k48_14_cifar100_" + "_" + filename)
-model.fit(x_train, y_train, epochs=100, batch_size=128, verbose=1,
+model.fit(x_train, y_train, epochs=1, batch_size=128, verbose=1,
           validation_split=0.25, callbacks=[es, mcp])
 
 # 4. 평가, 예측
@@ -64,3 +67,6 @@ print('acc : ', results[1])
 
 # loss :  2.3675336837768555
 # acc :  0.398499995470047
+
+# LSTM
+#### 데스크탑 GPU 로 돌려 보기
