@@ -89,5 +89,29 @@ print('val_acc : ', val_acc[-1])
 # accuracy :  0.918749988079071
 # val_acc :  0.949999988079071
 
+
+# loss :  0.2615147531032562
+# val_loss :  0.012746581807732582
+# accuracy :  0.8999999761581421
+# val_acc :  1.0
+
 # 그림 그려서 확인해본다
 # matplotlib
+import matplotlib.pyplot as plt 
+
+fig = plt.figure(figsize=(14, 7)) # 그림 사이즈 지정 (가로 14인치, 세로 7인치)
+fig.suptitle('acc & loss')
+
+ax1 = fig.add_subplot(2, 1, 1) # 서브플롯들을 2 x 1 배열로 배치 그중 첫번째
+ax2 = fig.add_subplot(2, 1, 2)
+
+ax1.plot(accuracy, c='red', label='acc')
+ax1.plot(val_acc, c='blue', label='val_acc')
+
+ax2.plot(loss, c='limegreen', label='loss')
+ax2.plot(val_loss, c='violet', label='val_loss')
+ax1.set_xlabel('epochs')
+ax2.set_xlabel('epochs')
+plt.grid()
+plt.legend()
+plt.show()
