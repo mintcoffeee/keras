@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from keras.models import Model 
+from keras.models import Model, load_model 
 from keras.layers import Input, Dense, Dropout, Conv1D, Flatten, LSTM, MaxPooling1D      
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
@@ -272,6 +272,12 @@ mcp = ModelCheckpoint(monitor="val_loss", mode="auto", verbose=1,
 model.fit([sam1_train, sam2_train, amore1_train, amore2_train], sam_y_train,
           epochs =400, batch_size=4, verbose=1, validation_split=0.2,
           callbacks=[es, mcp])
+
+# model = load_model(filepath + '3_sam_stock_LSTM0129_1926_0082-742445.7500.hdf5')
+# 결과치 제출전에 꼭 확인하자!!!
+# loss :  628239.375
+# 1월 30일 삼성전자 시가 :  [[65229.395]]
+
 
 # 4. 평가, 예측
 loss = model.evaluate([sam1_test, sam2_test, amore1_test, amore2_test], sam_y_test)
