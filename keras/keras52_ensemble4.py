@@ -28,13 +28,13 @@ dense2 = Dense(12, activation='relu', name='ds12')(dense1)
 dense3 = Dense(13, activation='relu', name='ds13')(dense2)
 output1 = Dense(14, activation='relu', name='ds14')(dense3)
 
-# 2-2 모델2
+# 2-2 분기 모델1
 dense1 = Dense(11, activation='relu', name='ds41')(output1)
 dense2 = Dense(12, activation='relu', name='ds42')(dense1)
 dense3 = Dense(13, activation='relu', name='ds43')(dense2)
 output2 = Dense(12, name='ds44')(dense3)
 
-# 2-3 모델3
+# 2-3 분기 모델2
 dense1 = Dense(11, activation='relu', name='ds51')(output1)
 dense2 = Dense(12, activation='relu', name='ds52')(dense1)
 dense3 = Dense(13, activation='relu', name='ds53')(dense2)

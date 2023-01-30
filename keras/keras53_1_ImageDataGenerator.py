@@ -65,7 +65,7 @@ print(xy_train[0][1].shape) # (10,)
 # xy_train[1][1] : 10개의 이미지와 10개의 y ...  xy_train[9][9]
 # 이미지의 개수를 알 수 없을 때, batch_size=무한 으로 설정해서 통데이터 확인 할 수 있다. 
 # print(xy_train[0][0].shape)   # (160, 200, 200, 1)
-# print(xy_train[0][1].shape)   # (160,)
+# print(xy_train[0][1].shape)   # (160,) -> train 이미지 개수 총 160개
 
 print(type(xy_train))   # <class 'keras.preprocessing.image.DirectoryIterator'>
 print(type(xy_train[0]))    # <class 'tuple'> / 리스트는 수정가능 하지만, tuple은 한번 생성되면 수정할 수 없다.

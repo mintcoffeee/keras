@@ -85,7 +85,6 @@ model.fit([x1_train, x2_train, x3_train], [y1_train, y2_train, y3_train], epochs
 loss = model.evaluate([x1_test, x2_test, x3_test], [y1_test, y2_test, y3_test])
 print('loss : ', loss)
 
-# loss :  4.470348358154297e-08
 
 # 왜 loss 가 3개지??
 # 분기 모델 2개

@@ -70,8 +70,8 @@ hist = model.fit_generator(xy_train,
                            steps_per_epoch=160/5,  # steps_per_epoch = 훈련 샘플 수 / 배치 사이즈 : 1에포당 얼마나 걸을 걷이냐
                            epochs=300,    
                            validation_data=xy_test,
-                           validation_steps=4,
-                           callbacks=[es])     # validation_steps <<<<< 찾아보기 
+                           validation_steps=4,      # validation_steps <<<<< 찾아보기 
+                           callbacks=[es])     
 
 # 4. 평가, 예측
 accuracy = hist.history['acc']
