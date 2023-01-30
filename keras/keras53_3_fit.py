@@ -13,28 +13,18 @@ train_datagen =ImageDataGenerator(
     shear_range=0.7,     # 전단
     fill_mode='nearest'     # 수평으로 이동했을 때, 왼쪽 or 오른쪽 끝을 가까이 있는 값으로 채워라
 )
-# ImageDataGenerator :
-# 사진 이미지를 > 수치로 바꿔주는 역할
-# 데이터를 수정해서 증폭
-# 같은 데이터를 수정하지 않고 증폭하면 과적합 문제가 발생할 수 있다.
 
 test_datagen = ImageDataGenerator(
     rescale=1./255
 )
-# test 데이터는 scaling만 한다.
-# test 데이터는 증폭을 할 필요가 없다.
-# test 데이터는 평가모델을 위해 쓰이기 때문에 데이터를 증폭시키지 않고 사용 -> 실제 데이터를 사용해야 한다.
 
-xy_train = train_datagen.flow_from_directory(    # 폴더에 있는 이미지 데이터를 가져오겠다. / dirctory : 폴더
-    './_data/brain/train/',      # 폴더를 인식, ad -> 0 , noraml -> 1
-    # x = (160,150,150,1) = (N:데이터 개수, 150, 150(이미지 크기), 1(흑백))
-    # y = (160,)
-    # np.unique : [0 : 80개, 1 : 80개] 
-    target_size=(100, 100),     # 이미지의 크기가 다르더라도, 동일하게 200 * 200 증폭 or 축소 시킨다.
-    batch_size=1000,   # 훈련전에 배치사이즈를 미리 분리한다.   
-    # 파이토치는 데이터를 미리 분리
+
+xy_train = train_datagen.flow_from_directory(   
+    './_data/brain/train/',     
+    target_size=(100, 100),     # 이미지의 크기 100*100
+    batch_size=5,   
     class_mode='binary',
-    color_mode='grayscale',      # 끝자리가 0
+    color_mode='grayscale',      
     shuffle=True,   # 0과 1의 데이터를 적절히 섞는다.
     # Found 160 images belonging to 2 classes.
 )
@@ -42,28 +32,28 @@ xy_train = train_datagen.flow_from_directory(    # 폴더에 있는 이미지 �
 xy_test = test_datagen.flow_from_directory(    
     './_data/brain/test/',      
     target_size=(100, 100),     
-    batch_size=1000,   
+    batch_size=5,   
     class_mode='binary',
     color_mode='grayscale',
     shuffle=True,
     # Found 120 images belonging to 2 classes.
 )
 
-
 # 2. 모델
 from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout
+from keras.callbacks import EarlyStopping
 
 model = Sequential()
 model.add(Conv2D(128, (3,3), activation='relu', input_shape=(100, 100, 1)))
 model.add(MaxPooling2D())
 model.add(Conv2D(256, (3,3), activation='relu'))
 model.add(MaxPooling2D())
-model.add(Conv2D(256, (3,3), activation='relu'))
+model.add(Conv2D(512, (3,3), activation='relu'))
 model.add(MaxPooling2D())
 model.add(Flatten())
 model.add(Dense(512, activation='relu'))
-model.add(Dropout(0.4))
+model.add(Dropout(0.3))
 model.add(Dense(1, activation='sigmoid'))
 model.summary()
 
@@ -74,12 +64,18 @@ model.compile(loss='binary_crossentropy', optimizer='adam',
 # hist = model.fit_generator(xy_train, steps_per_epoch=16, epochs=5,    # steps_per_epoch = 훈련 샘플 수 / 배치 사이즈 : 1에포당 얼마나 걸을 걷이냐
 #                     validation_data=xy_test,
 #                     validation_steps=4,)   
+es = EarlyStopping(monitor='val_acc',
+                   mode='max',
+                   restore_best_weights=True,
+                   verbose=1,
+                   patience=30)
 hist = model.fit(xy_train[0][0], xy_train[0][1],
-                 batch_size=16,
+                 batch_size=4,
                 #  steps_per_epoch=16,     # steps_per_epoch = 훈련 샘플 수 / 배치 사이즈 : 1에포당 얼마나 걸을 걷이냐
-                 epochs=5,
+                 epochs=300,
                  validation_data=(xy_test[0][0], xy_test[0][1]),
                 #  validation_steps=4,
+                callbacks=[es],
                 ) 
 
 # 4. 평가, 예측
@@ -93,4 +89,7 @@ print('val_loss : ', val_loss[-1])
 print('accuracy : ', accuracy[-1])
 print('val_acc : ', val_acc[-1])
 
-
+# loss :  0.006500168237835169
+# val_loss :  0.5363031029701233
+# accuracy :  1.0
+# val_acc :  0.8666666746139526
