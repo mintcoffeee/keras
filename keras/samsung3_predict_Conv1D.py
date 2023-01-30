@@ -17,14 +17,14 @@ amore = pd.read_csv(path + '아모레퍼시픽_주가.csv', encoding='cp949', se
 # 삼성 액면 분할 2018.5.4
 sam['일자'] = pd.to_datetime(sam['일자'])
 sam.set_index('일자', inplace=True)
-cutoff_date = '2018-5-4'
+cutoff_date = '2020-1-1'
 sam = sam.loc[cutoff_date:]
 # print(sam)     # [1166 rows x 16 columns]
 
 # 아모레 퍼시픽 액면 분할 2015.5.8 
 amore['일자'] = pd.to_datetime(amore['일자'])
 amore.set_index('일자', inplace=True)
-cutoff_date = '2018-5-4'    # 데이터 개수를 맞춰야 하기 때문에 2018.5.4
+cutoff_date = '2020-1-1'    # 데이터 개수를 맞춰야 하기 때문에 2018.5.4
 amore = amore.loc[cutoff_date:]
 # print(amore)    # [1902 rows x 16 columns]
 
@@ -202,10 +202,10 @@ output1 = Dense(512, activation='relu', name='s15')(sd18)
 
 # 2-2. 삼전 모델2
 input2 = Input(shape=(sam2_x_train.shape[1], sam2_x_train.shape[2]))
-sd21 = Conv1D(128, 2, padding='same', activation='relu', name='s21')(input2)
+sd21 = Conv1D(256, 2, padding='same', activation='relu', name='s21')(input2)
 sd22 = Conv1D(256, 2, activation='relu', name='s22')(sd21)
 sd23 = MaxPooling1D()(sd22)
-sd24 = Conv1D(256, 2, padding='same', activation='relu', name='s23')(sd23)
+sd24 = Conv1D(512, 2, padding='same', activation='relu', name='s23')(sd23)
 sd25 = Dropout(0.4)(sd24)
 # sd25 = MaxPooling1D()(sd24)
 sd26 = Flatten()(sd25)
@@ -215,10 +215,10 @@ output2 = Dense(512, activation='relu', name='s25')(sd28)
 
 # 2-3. 아모레 모델 1
 input3 = Input(shape=(amore1_x_train.shape[1], amore1_x_train.shape[2]))
-ad11 = Conv1D(128, 2, padding='same', activation='relu', name='a11')(input3)
+ad11 = Conv1D(256, 2, padding='same', activation='relu', name='a11')(input3)
 ad12 = Conv1D(256, 2, activation='relu', name='a12')(ad11)
 ad13 = MaxPooling1D()(ad12)
-ad14 = Conv1D(256, 2, padding='same', activation='relu', name='a13')(ad13)
+ad14 = Conv1D(512, 2, padding='same', activation='relu', name='a13')(ad13)
 ad15 = Dropout(0.4)(ad14)
 # ad15 = MaxPooling1D()(ad14)
 ad16 = Flatten()(ad15)
@@ -228,10 +228,10 @@ output3 = Dense(512, activation='relu', name='a15')(ad18)
 
 # 2-4. 아모레 모델 2
 input4 = Input(shape=(amore2_x_train.shape[1], amore2_x_train.shape[2]))
-ad21 = Conv1D(128, 2, padding='same', activation='relu', name='a21')(input4)
+ad21 = Conv1D(256, 2, padding='same', activation='relu', name='a21')(input4)
 ad22 = Conv1D(256, 2, activation='relu', name='a22')(ad21)
 ad23 = MaxPooling1D()(ad22)
-ad24 = Conv1D(256, 2, padding='same', activation='relu', name='a23')(ad23)
+ad24 = Conv1D(512, 2, padding='same', activation='relu', name='a23')(ad23)
 ad25 = Dropout(0.4)(ad24)
 # ad25 = MaxPooling1D()(ad24)
 ad26 = Flatten()(ad25)
@@ -242,7 +242,7 @@ output4 = Dense(512, activation='relu', name='a25')(ad28)
 
 # 2-5. 모델병합
 merge1 = concatenate([output1, output2, output3, output4], name='mg1')        
-merge2 = Dense(512, activation='relu', name='mg2')(merge1)
+merge2 = Dense(1024, activation='relu', name='mg2')(merge1)
 merge3 = Dropout(0.5)(merge2)
 merge4 = Dense(1024, activation='relu', name='mg3')(merge3)   
 last_output = Dense(1,  name ='last')(merge4)
@@ -288,8 +288,13 @@ amore2_pred = amore2_pred.reshape(1, amore2_x_test.shape[1], amore2_x_test.shape
 result = model.predict([sam1_pred, sam2_pred, amore1_pred, amore2_pred])
 print("1월 30일 삼성전자 시가 : ", result)
 
+# 2018.5.4 ~
 # loss :  978945.625
 # 1월 30일 삼성전자 시가 :  [[64400.75]]
 
 # loss :  721656.0625
 # 1월 30일 삼성전자 시가 :  [[65036.555]]
+
+# 2020.~
+# loss :  1922650.875
+# 1월 30일 삼성전자 시가 :  [[66129.81]]

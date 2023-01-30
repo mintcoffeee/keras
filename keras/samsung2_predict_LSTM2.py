@@ -153,6 +153,8 @@ print(amore2_train.shape, amore2_test.shape)    # (1327, 25) (570, 25)
 # 삼전 데이터 scaling
 sam_scaler1 = StandardScaler()
 sam_scaler2 = StandardScaler()
+# RobustScaler 도 표준화된 데이터를 만드는데 좋다.
+
 sam_scaler1.fit(sam1_train)
 sam_scaler2.fit(sam2_train)
 # 1
@@ -194,6 +196,10 @@ amore2_test = np.reshape(amore2_test, (amore2_x_test.shape[0], amore2_x_test.sha
 
 # 2-1. 삼전 모델1
 input1 = Input(shape=(sam1_x_train.shape[1], sam1_x_train.shape[2]))
+
+# normalized_data = BatchNormalization()(input_data)    
+# LSTM layer적용 전에 배치정규화(BatchNormalization)을 진행했다면 더 나은 결과 값을 얻었을 것이다.
+
 sd11 = LSTM(128, return_sequences=True, activation='relu', name='s11')(input1)
 sd12 = LSTM(256, return_sequences=True, activation='relu',  name='s12')(sd11)
 sd13 = LSTM(512, activation='relu')(sd12)
