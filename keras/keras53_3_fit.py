@@ -31,7 +31,7 @@ xy_train = train_datagen.flow_from_directory(    # 폴더에 있는 이미지 �
     # y = (160,)
     # np.unique : [0 : 80개, 1 : 80개] 
     target_size=(100, 100),     # 이미지의 크기가 다르더라도, 동일하게 200 * 200 증폭 or 축소 시킨다.
-    batch_size=10,   # 훈련전에 배치사이즈를 미리 분리한다.   
+    batch_size=1000,   # 훈련전에 배치사이즈를 미리 분리한다.   
     # 파이토치는 데이터를 미리 분리
     class_mode='binary',
     color_mode='grayscale',      # 끝자리가 0
@@ -42,7 +42,7 @@ xy_train = train_datagen.flow_from_directory(    # 폴더에 있는 이미지 �
 xy_test = test_datagen.flow_from_directory(    
     './_data/brain/test/',      
     target_size=(100, 100),     
-    batch_size=10,   
+    batch_size=1000,   
     class_mode='binary',
     color_mode='grayscale',
     shuffle=True,
@@ -71,11 +71,16 @@ model.summary()
 model.compile(loss='binary_crossentropy', optimizer='adam',
               metrics=['acc'])
 
-hist = model.fit_generator(xy_train,
-                           steps_per_epoch=16,  # steps_per_epoch = 훈련 샘플 수 / 배치 사이즈 : 1에포당 얼마나 걸을 걷이냐
-                           epochs=10,    
-                           validation_data=xy_test,
-                           validation_steps=4,)     # validation_steps <<<<< 찾아보기 
+# hist = model.fit_generator(xy_train, steps_per_epoch=16, epochs=5,    # steps_per_epoch = 훈련 샘플 수 / 배치 사이즈 : 1에포당 얼마나 걸을 걷이냐
+#                     validation_data=xy_test,
+#                     validation_steps=4,)   
+hist = model.fit(xy_train[0][0], xy_train[0][1],
+                 batch_size=16,
+                #  steps_per_epoch=16,     # steps_per_epoch = 훈련 샘플 수 / 배치 사이즈 : 1에포당 얼마나 걸을 걷이냐
+                 epochs=5,
+                 validation_data=(xy_test[0][0], xy_test[0][1]),
+                #  validation_steps=4,
+                ) 
 
 # 4. 평가, 예측
 accuracy = hist.history['acc']
@@ -89,5 +94,3 @@ print('accuracy : ', accuracy[-1])
 print('val_acc : ', val_acc[-1])
 
 
-# 그림 그려서 확인해본다
-# matplotlib
