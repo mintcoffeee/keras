@@ -31,7 +31,7 @@ train_datagen = ImageDataGenerator(
 x_augumented = train_datagen.flow(
     x_augument, # x
     y_augument, # y 
-    batch_size=augument_size,
+    batch_size=augument_size,   # 40000 > 40000
     shuffle=True,
 )
 

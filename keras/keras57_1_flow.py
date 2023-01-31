@@ -20,7 +20,7 @@ train_datagen = ImageDataGenerator(
 x_data = train_datagen.flow(
     np.tile(x_train[0].reshape(28*28), augument_size).reshape(-1, 28, 28, 1),   # x     # -1 : 전체 data
     np.zeros(augument_size),                                                    # y
-    batch_size=augument_size,
+    batch_size=augument_size,   # 1개의 데이터를 100개로 증폭
     shuffle=True,
 )
 

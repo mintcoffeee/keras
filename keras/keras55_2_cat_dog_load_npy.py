@@ -20,7 +20,7 @@ from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout
 from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
 model = Sequential()
-model.add(Conv2D(32, (3,3), padding='same', activation='relu', input_shape=(190, 190, 1)))
+model.add(Conv2D(32, (3,3), padding='same', activation='relu', input_shape=(190, 190, 3)))
 model.add(MaxPooling2D())
 model.add(Conv2D(64, (3,3), padding='same', activation='relu'))
 model.add(MaxPooling2D())
