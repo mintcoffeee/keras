@@ -22,7 +22,8 @@ test_datagen = ImageDataGenerator(
 xy_train = train_datagen.flow_from_directory(   
     './_data/brain/train/',     
     target_size=(100, 100),     # 이미지의 크기 100*100
-    batch_size=5,   
+    batch_size=1000,            # 밑에서 fit 으로 훈련을 진행할 거기 때문에 데이터의 전체 숫자를 적는다
+                                # 모르면 큰 값 기록
     class_mode='binary',
     color_mode='grayscale',      
     shuffle=True,   # 0과 1의 데이터를 적절히 섞는다.
@@ -32,7 +33,7 @@ xy_train = train_datagen.flow_from_directory(
 xy_test = test_datagen.flow_from_directory(    
     './_data/brain/test/',      
     target_size=(100, 100),     
-    batch_size=5,   
+    batch_size=1000,   
     class_mode='binary',
     color_mode='grayscale',
     shuffle=True,
@@ -45,11 +46,11 @@ from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout
 from keras.callbacks import EarlyStopping
 
 model = Sequential()
-model.add(Conv2D(128, (3,3), activation='relu', input_shape=(100, 100, 1)))
+model.add(Conv2D(64, (3,3), activation='relu', input_shape=(100, 100, 1)))
 model.add(MaxPooling2D())
 model.add(Conv2D(256, (3,3), activation='relu'))
 model.add(MaxPooling2D())
-model.add(Conv2D(512, (3,3), activation='relu'))
+model.add(Conv2D(256, (3,3), activation='relu'))
 model.add(MaxPooling2D())
 model.add(Flatten())
 model.add(Dense(512, activation='relu'))
@@ -70,7 +71,7 @@ es = EarlyStopping(monitor='val_acc',
                    verbose=1,
                    patience=30)
 hist = model.fit(xy_train[0][0], xy_train[0][1],
-                 batch_size=4,
+                 batch_size=1,
                 #  steps_per_epoch=16,     # steps_per_epoch = 훈련 샘플 수 / 배치 사이즈 : 1에포당 얼마나 걸을 걷이냐
                  epochs=300,
                  validation_data=(xy_test[0][0], xy_test[0][1]),

@@ -73,5 +73,6 @@ print(type(xy_train[0][0])) # <class 'numpy.ndarray'>
 print(type(xy_train[0][1])) # <class 'numpy.ndarray'>
 
 
-
+# 파이썬 책에서 자료형 찾아보기
+# dictionery, tuple, list ...
 

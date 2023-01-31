@@ -56,11 +56,14 @@ model.add(Flatten())
 model.add(Dense(512, activation='relu'))
 model.add(Dropout(0.3))
 model.add(Dense(1, activation='sigmoid'))
+# model.add(Dense(2, activation='softmax'))
 model.summary()
 
 # 3. 컴파일, 훈련
 model.compile(loss='binary_crossentropy', optimizer='adam',
               metrics=['acc'])
+# model.compile(loss='sparse_categorical_crossentropy', optimizer='adam',
+            #   metrics=['acc'])
 es = EarlyStopping(monitor='val_acc',
                    mode='max',
                    restore_best_weights=True,
@@ -68,6 +71,7 @@ es = EarlyStopping(monitor='val_acc',
                    patience=30)
 hist = model.fit_generator(xy_train,
                            steps_per_epoch=160/5,  # steps_per_epoch = 훈련 샘플 수 / 배치 사이즈 : 1에포당 얼마나 걸을 걷이냐
+                           # if 데이터 159 개 batch 10 일 경우 15.9 -> 16 
                            epochs=300,    
                            validation_data=xy_test,
                            validation_steps=4,      # validation_steps <<<<< 찾아보기 
