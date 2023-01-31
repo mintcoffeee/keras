@@ -3,15 +3,15 @@
 import numpy as np
 from keras.preprocessing.image import ImageDataGenerator
 
-
+############### 이미지 파일 cat & dog split ##################
 import os
 
 # 원본 이미지 파일 경로
-img_path = '/Users/moon/Desktop/_data/dogs-vs-cats/train/'
+img_path = 'C:/_data/dogs-vs-cats/train/train/'
 
 # 새로운 폴더 경로
-cat_folder = '/Users/moon/Desktop/_data/dogs-vs-cats/train1/train_cat/'
-dog_folder = '/Users/moon/Desktop/_data/dogs-vs-cats/train1/train_dog/'
+cat_folder = 'C:/_data/dogs-vs-cats/train/cat/'
+dog_folder = 'C:/_data/dogs-vs-cats/train/dog/'
 
 # 새로운 폴더 생성
 if not os.path.exists(cat_folder):
@@ -31,9 +31,9 @@ for img in img_list:
     elif 'dog' in img:
         dst = dog_folder + img
         os.rename(src, dst)
-
+###############################################################
 IMAGE_SIZE = (190,190)
-BATCH_SIZE = 100000000000000
+BATCH_SIZE = 30000
 
 train_datagen =ImageDataGenerator(  
     rescale=1./255,
@@ -44,12 +44,13 @@ test_datagen = ImageDataGenerator(
 )
 
 xy_train = train_datagen.flow_from_directory(    
-    '/Users/moon/Desktop/_data/dogs-vs-cats/train1/',      # 폴더를 인식, ad -> 0 , noraml -> 1 
+    'C:/_data/dogs-vs-cats/train/',      # 폴더를 인식, ad -> 0 , noraml -> 1 
     target_size=IMAGE_SIZE,
     batch_size=BATCH_SIZE,   
-    class_mode='binary',      # xy_train[0][1] = [1. 0. 0. 0. 1. 1. 1. 1. 0. 1.]
+    class_mode='binary',      
     # class_mode='categorical',   # OneHot
-    color_mode='grayscale',      
+    # color_mode='grayscale',   # 0 과 1 로 나온다. 흑백   
+    color_mode='rgb',   ####### 컬러 데이터는 rgb  
     shuffle=True,   # 0과 1의 데이터를 적절히 섞는다.
     # Found 160 images belonging to 2 classes.
 )
@@ -65,17 +66,16 @@ xy_train = train_datagen.flow_from_directory(
 #     # Found 120 images belonging to 2 classes.
 # )
 
-
 print(xy_train)
-# print(xy_train[0][0].shape) # (25000, 190, 190, 1)
+# print(xy_train[0][0].shape) # (25000, 190, 190, 3)
 # print(xy_train[0][1])
 # print(xy_train[0][1].shape) # (25000,)
 
-np.save('/Users/moon/Desktop/_data/dogs-vs-cats/dogs_cat_x_train.npy', arr=xy_train[0][0])
-np.save('/Users/moon/Desktop/_data/dogs-vs-cats/dogs_cat_y_train.npy', arr=xy_train[0][1])
+# train 파일 numpy 형태로 x_train, y_train 을 저장한다.
+np.save('C:/_data/dogs-vs-cats/train/dogs_cat_x_train.npy', arr=xy_train[0][0])
+np.save('C:/_data/dogs-vs-cats/train/dogs_cat_y_train.npy', arr=xy_train[0][1])
 
 # np.save('./_data/brain/brain_x_test.npy', arr=xy_test[0][0])
 # np.save('./_data/brain/brain_y_test.npy', arr=xy_test[0][1])
-
 
 
